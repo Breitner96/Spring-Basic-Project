@@ -6,6 +6,7 @@ import com.platzi.projectoplatzi.persistence.crud.ProductCrudRepository;
 import com.platzi.projectoplatzi.persistence.entity.Product;
 import com.platzi.projectoplatzi.persistence.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

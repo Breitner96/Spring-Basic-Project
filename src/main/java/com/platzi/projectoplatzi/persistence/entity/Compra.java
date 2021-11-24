@@ -28,7 +28,7 @@ public class Compra {
     @Column(name = "comentario", length = 300)
     private String comentario;
 
-    private Boolean estado;
+    private String estado;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente",insertable = false, updatable =false)
@@ -36,8 +36,8 @@ public class Compra {
 
 //      Para tener toda lista de productos que pertenecen a una compra hago lo siguiente
 //      La relacion se hace directamente con la tabla compras_productos
-    @OneToMany(mappedBy = "product")
-    List<ComprasProducto> products;
+    @OneToMany(mappedBy = "compra",cascade = {CascadeType.ALL})
+    private List<ComprasProducto> products;
 
     public Long getIdCompra() {
         return idCompra;
@@ -79,11 +79,11 @@ public class Compra {
         this.comentario = comentario;
     }
 
-    public Boolean getEstado() {
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(Boolean estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
     }
 

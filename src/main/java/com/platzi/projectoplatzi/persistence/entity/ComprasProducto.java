@@ -26,6 +26,8 @@ public class ComprasProducto {
     private Boolean estado;
 
     @ManyToOne
+//  En @MapsId debemos colocar el nombre de la clave primaria que queremos que se enlace
+    @MapsId("idCompra")
     @JoinColumn(name = "id_compra", insertable = false, updatable = false)
     private Compra compra;
 

@@ -3,6 +3,8 @@ package com.platzi.projectoplatzi.web.controller;
 import com.platzi.projectoplatzi.domain.DomainProduct;
 import com.platzi.projectoplatzi.domain.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,35 +17,47 @@ public class DomainProductController {
     @Autowired
     private ProductService productService;
 
-//    Para control de respuestas hhttp
+//    Para control de respuestas http hacemos uso de ResponseEntity<> y HttpStatus
+//    de la siguiente manera
     @GetMapping()
-    public List<DomainProduct> getAll() {
+    public ResponseEntity<List<DomainProduct>> getAll() {
 
-        return productService.getAll();
+        return new ResponseEntity<>(productService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public Optional<DomainProduct> getProduct(@PathVariable("id") Long productId) {
+    public ResponseEntity<DomainProduct> getProduct(@PathVariable("id") Long productId) {
 
-        return productService.getProduct(productId);
+        return productService.getProduct(productId)
+                .map(product -> new ResponseEntity<>(product,HttpStatus.OK)).
+                orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/category/{id}")
-    public Optional<List<DomainProduct>> getByCategory(@PathVariable("id") Long categoryId) {
+    public ResponseEntity<List<DomainProduct>> getByCategory(@PathVariable("id") Long categoryId) {
 
-        return productService.getByCategory(categoryId);
+        return productService.getByCategory(categoryId)
+                .map(produts->new ResponseEntity<>(produts,HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping()
-    public DomainProduct save(@RequestBody DomainProduct domainProduct){
+    public ResponseEntity<DomainProduct> save(@RequestBody DomainProduct domainProduct){
 
-        return productService.save(domainProduct);
+        return new ResponseEntity<>(productService.save(domainProduct),HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public boolean deleteById(@PathVariable("id") Long productId){
+    public ResponseEntity deleteById(@PathVariable("id") Long productId){
 
-        return productService.deleteById(productId);
+        if(productService.deleteById(productId)){
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        else{
+
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
     }
 
 
